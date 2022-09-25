@@ -19,25 +19,18 @@ class _WelcomeScreenState extends State<WelcomeScreen>
       duration: Duration(seconds: 1),
       vsync: this,
     );
-    animation = CurvedAnimation(parent: controller, curve: Curves.easeIn);
+    animation = ColorTween(begin: Colors.blueGrey, end: Colors.white)
+        .animate(controller);
     controller.forward();
-    animation.addStatusListener((status) {
-      if (animation.status == AnimationStatus.completed) {
-        controller.reverse(from: 1.0);
-      } else if (animation.status == AnimationStatus.dismissed) {
-        controller.forward();
-      }
-    });
     controller.addListener(() {
       setState(() {});
-      print(controller.value);
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: animation.value,
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 24.0),
         child: Column(
@@ -50,7 +43,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                   tag: 'logo',
                   child: Container(
                     child: Image.asset('images/logo.png'),
-                    height: animation.value * 80,
+                    height: 60,
                   ),
                 ),
                 Text(
@@ -108,11 +101,5 @@ class _WelcomeScreenState extends State<WelcomeScreen>
         ),
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    controller.dispose();
-    super.dispose();
   }
 }
